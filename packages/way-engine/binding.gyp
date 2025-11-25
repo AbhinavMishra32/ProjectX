@@ -1,7 +1,7 @@
 {
   "targets": [
     {
-      "target_name": "way_engine",
+      "target_name": "native_math",
       "sources": [ "src/addon.cc", "src/core.cc" ],
       "cflags_cc!": [ "-fno-exceptions" ],
       "conditions": [

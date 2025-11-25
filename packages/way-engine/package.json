@@ -2,7 +2,7 @@
   "name": "@worldview/way-engine",
   "version": "1.0.0",
   "type": "commonjs",
-  "main": "build/Release/native_math.node",
+  "main": "index.js",
   "gypfile": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

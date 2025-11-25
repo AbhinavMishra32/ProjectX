@@ -1,49 +1,53 @@
 #include "core.h"
-#include <vector>
+#include <limits>
 
-double sum_array(const double* data, size_t length) {
-    double sum = 0.0;
-    for (size_t i = 0; i < length; ++i) {
-        sum += data[i];
-    }
-    return sum;
+VectorDB::VectorDB(int dim) : dim_(dim), count_(0) {}
+
+int VectorDB::dim() const {
+    return dim_;
 }
 
-struct VectorDB {
-    std::vector<float> data;
-    int dim;
+size_t VectorDB::size() const {
+    return count_;
+}
 
-    VectorDB(int dim): dim(dim) {}
+void VectorDB::add(const float* v) {
+    data_.insert(data_.end(), v, v + dim_);
+    ++count_;
+}
 
-    void add(const std::vector<float> &v){
-        for (float x : v) {
-            data.push_back(x);
+float VectorDB::l2(const float* a, const float* b) const {
+    float d = 0.0f;
+    for (int i = 0; i < dim_; ++i) {
+        float diff = a[i] - b[i];
+        d += diff * diff;
+    }
+    return d;
+}
+
+int VectorDB::search(const float* query, float* outDistance) const {
+    if (count_ == 0) {
+        if (outDistance) {
+            *outDistance = std::numeric_limits<float>::infinity();
+        }
+        return -1;
+    }
+
+    float bestDist = std::numeric_limits<float>::infinity();
+    int bestIndex = -1;
+
+    for (size_t i = 0; i < count_; ++i) {
+        const float* base = &data_[i * dim_];
+        float d = l2(base, query);
+        if (d < bestDist) {
+            bestDist = d;
+            bestIndex = static_cast<int>(i);
         }
     }
 
-    // distance between two vectors is just normal distance formula!
-    float l2(const float* a, const float* b, int dim) {
-        float d = 0;
-        for (int i = 0; i < dim; i++) {
-            float diff = a[i] - b[i];
-            d += diff * diff;
-        }
-        return d;
+    if (outDistance) {
+        *outDistance = bestDist;
     }
-
-    int search(const std::vector<float>& query) {
-        float bestDist = 1e30;
-        int bestIndex = -1;
-
-        for (int i = 0; i < data.size(); i += dim) {
-            float d = l2(&data[i], query.data(), dim);
-
-            if (d < bestDist) {
-                bestDist = d;
-                bestIndex = i / dim;
-            }
-        }
-        return bestIndex;
-    }
-};
+    return bestIndex;
+}
 
