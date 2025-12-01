@@ -28,7 +28,7 @@ public:
 	}
 
 	VectorDBWrap(const CallbackInfo& info) : ObjectWrap<VectorDBWrap>(info) {
-		Env env = info.Env();
+		Napi::Env env = info.Env();
 		if (info.Length() < 1 || !info[0].IsNumber()) {
 			TypeError::New(env, "Expected dimension").ThrowAsJavaScriptException();
 			return;
@@ -44,7 +44,7 @@ public:
 private:
 	std::unique_ptr<VectorDB> db_;
 
-	std::vector<float> ToVector(const Napi::Value& value, int dim, Env env) {
+	std::vector<float> ToVector(const Napi::Value& value, int dim, Napi::Env env) {
 		std::vector<float> out;
 
 		if (value.IsTypedArray()) {
@@ -80,7 +80,7 @@ private:
 			}
 			out.reserve(dim);
 			for (int i = 0; i < dim; ++i) {
-				Value v = arr.Get(i);
+				Napi::Value v = arr.Get(i);
 				if (!v.IsNumber()) {
 					TypeError::New(env, "Vector must contain numbers").ThrowAsJavaScriptException();
 					return std::vector<float>();
@@ -95,7 +95,7 @@ private:
 	}
 
 	Napi::Value Add(const CallbackInfo& info) {
-		Env env = info.Env();
+		Napi::Env env = info.Env();
 		if (info.Length() < 1) {
 			TypeError::New(env, "Expected vector").ThrowAsJavaScriptException();
 			return env.Null();
@@ -111,7 +111,7 @@ private:
 	}
 
 	Napi::Value Search(const CallbackInfo& info) {
-		Env env = info.Env();
+		Napi::Env env = info.Env();
 		if (info.Length() < 1) {
 			TypeError::New(env, "Expected query").ThrowAsJavaScriptException();
 			return env.Null();
