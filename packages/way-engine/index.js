@@ -1,7 +1,31 @@
 const path = require("path");
 
-const bindingPath = path.join(__dirname, "build", "Release", "native_math.node");
-const native = require(bindingPath);
+let native;
+try {
+  const possiblePaths = [
+    path.resolve(__dirname, "build/Release/native_math.node"),
+    path.resolve(process.cwd(), "packages/way-engine/build/Release/native_math.node"),
+    path.resolve(process.cwd(), "../../packages/way-engine/build/Release/native_math.node"),
+  ];
+
+  let loaded = false;
+  for (const p of possiblePaths) {
+    try {
+      native = require(p);
+      loaded = true;
+      break;
+    } catch (e) {
+      continue;
+    }
+  }
+
+  if (!loaded) {
+    throw new Error("Could not find native addon in any expected location");
+  }
+} catch (e) {
+  console.error("Failed to load native addon:", e.message);
+  throw e;
+}
 
 class VectorDB {
   constructor(dim) {
