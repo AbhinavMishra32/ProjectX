@@ -1,0 +1,92 @@
+.graphContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--background);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.graphHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.graphHeader h2 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.graphLegend {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.semanticLine,
+.sequentialLine {
+  width: 20px;
+  height: 2px;
+  display: inline-block;
+  border-radius: 1px;
+}
+
+.semanticLine {
+  background: rgba(16, 185, 129, 0.8);
+  box-shadow: 0 0 4px rgba(16, 185, 129, 0.6);
+}
+
+.sequentialLine {
+  background: rgba(0, 112, 243, 0.4);
+}
+
+.nodeCount {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem 0.75rem;
+  background: rgba(0, 168, 255, 0.1);
+  border: 1px solid rgba(0, 168, 255, 0.3);
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #00a8ff;
+}
+
+.graphCanvas {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  position: relative;
+}
+
+.graphCanvas canvas {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 8px;
+}
+
+.emptyState {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.875rem;
+  text-align: center;
+}
